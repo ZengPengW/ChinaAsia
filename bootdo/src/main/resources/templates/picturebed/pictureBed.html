@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>图床</title>
+    <link rel="stylesheet" href="/css/picbed.css">
+	<script src="/js/jquery.min.js"></script>
+
+</head>
+<body style="">
+<div id="particles"><canvas class="pg-canvas" width="1920" height="978"></canvas></div>
+<div class="container nav-main">
+<h1 class="web-title"> </h1>
+</div>
+<div class="container">
+<div class="panel panel-default">
+    <div class="panel-heading">图床</div>
+    <div class="panel-body tuchuang-main">
+        <form enctype="multipart/form-data" id="tuchuang-form" onsubmit="return false;">
+            <button type="button" onclick="file.click();" class="btn btn-default" id="toUploaded">上传完成！您可以继续选择图片上传(ﾉﾟ▽ﾟ)ﾉ</button>
+            <input type="file" name="file" id="file" style="display:none" accept="image/*" multiple="multiple">
+                    <label class="radio-inline"><input name="type" type="radio" value="Sina" checked="" style="display:none;"></label>
+            <div class="form-group text-center">
+                <button class="btn btn-primary" onclick="doUpload();return false;" style="margin: 15px auto">
+                    开始上传
+                </button>
+            </div>
+            <textarea id="output" class="form-control" placeholder="上传后全选复制此处的 UBB 代码即可"></textarea>
+        </form>
+    </div>
+</div>
+<script>
+$(function () {
+    $("#toUploaded").html("点击这里选择图片，支持批量上传(ﾉﾟ▽ﾟ)ﾉ");
+    
+    $('input[name="file"]').change(function (event) {
+        var filePaths = $(this)[0].files;
+        
+        if (filePaths.length > 20) {
+            alert("别贪心，一次最多选择20张图片喔ヾ(=･ω･=)o");
+            $("#tuchuang-form")[0].reset();
+            return;
+        }
+        $("#toUploaded").html("您选择了 " + filePaths.length + " 个文件(/≧▽≦)/~")
+    })
+});
+function doUpload() {
+    var formData = new FormData();
+    var files = $("#file")[0].files;
+    if (files.length == 0) {
+        alert("请选择文件后再上传！");
+        return;
+    }
+    var flag = 0;
+    for (var i = 0; i < files.length; i++) {
+        formData.append("fileupload", files[i]);
+        $("#toUploaded").html("<span style='color: green;'>努力上传中，请稍候...</span>");
+        var type = $('input:radio[name="type"]:checked').val();
+        $.ajax({
+            url: "https://img.yyhy.me/upload.php?type=" + type,
+            type: "post",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                if (++flag == files.length) {
+                    $("#toUploaded").html("上传完成！您可以继续选择图片上传(ﾉﾟ▽ﾟ)ﾉ");
+                }
+                
+                $("#output").val($("#output").val() + '[img]'+data.msg +'[/img]' + "\n");
+                $("#output").scrollTop($("#output")[0].scrollHeight);
+                
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('图片上传失败 - ' + XMLHttpRequest.status);
+                console.error(XMLHttpRequest + textStatus + errorThrown);
+            }
+        })
+    }
+};
+</script>
+</div>
+
+</body></html>
