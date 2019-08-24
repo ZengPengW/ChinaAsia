@@ -13,8 +13,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/bootdo?useUnicode=true&characterEncoding=utf8
     username: root
     password: 147258
-    initialSize: 1
-    minIdle: 3
+    initialSize: 5
+    minIdle: 5
     maxActive: 20
     # 配置获取连接等待超时的时间
     maxWait: 60000

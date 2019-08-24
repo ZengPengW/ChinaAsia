@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="id" name="id" th:value="${apido.id}"
+                               class="form-control" type="hidden">
+
+                        <input id="pagename" name="pagename" th:value="${apido.pagename}"
+                               class="form-control" type="hidden">
+<!--                        <input id="created" name="id" th:value="${#dates.format(apido.created, 'yyyy-MM-dd')}"-->
+<!--                               class="form-control" type="hidden">-->
+<!--                        <input id="updated" name="id" th:value="${#dates.format(apido.updated, 'yyyy-MM-dd')}"-->
+<!--                               class="form-control" type="hidden">-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">接口名称：</label>
+                            <div class="col-sm-8">
+                                <input id="name" name="name" th:value="${apido.name}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">接口描述：</label>
+                            <div class="col-sm-8">
+                                <textarea cols="20" rows="5"  class="form-control" th:text="${apido.desc}" name="desc">
+                                </textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">字段值(多条以英文逗号分隔)：</label>
+                            <div class="col-sm-8">
+                                <textarea cols="20" rows="5"   class="form-control"  name="data" id="data">
+                                </textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="button" class="btn btn-primary" id="mysubmint">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<!--<script type="text/javascript" src="/js/appjs/common/dict/edit.js">-->
+<!--</script>-->
+<script th:inline="javascript">
+    var v = [[${apido.data}]];
+    v=JSON.parse(v);
+    console.log(v);
+    var str="";
+    $.each(v.field, function(index,c) {
+
+            str+=c+",";
+
+    });
+    $("#data").val(str);
+    $(function(){
+        $("#mysubmint").click(function () {
+
+
+            $.post("/api/update/updateFieldApi",$("#signupForm").serialize(), function(data){
+                if(data.code == 0){
+                    parent.layer.msg("更新成功！！！");
+                    window.setTimeout(function () {
+                        parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(index);
+                    },900);
+                }else{
+                    parent.layer.msg("更新失败！！！");
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>

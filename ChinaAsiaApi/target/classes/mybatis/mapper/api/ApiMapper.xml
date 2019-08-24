@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chinaasia.mapper.ApiDao">
+
+    <select id="selectAll" resultType="com.chinaasia.pojo.ApiDo">
+        select * from api where `status`=0
+    </select>
+
+
+    <select id="selectById" resultType="com.chinaasia.pojo.ApiDo" parameterType="long" >
+        select * from api where id=#{id} and `status`=0
+    </select>
+
+</mapper>

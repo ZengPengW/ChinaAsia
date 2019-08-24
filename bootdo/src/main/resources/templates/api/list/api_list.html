@@ -41,12 +41,22 @@
 <!--    <script src="/js/appjs/sys/menu/menu.js"></script>-->
 </head>
 <body>
+<div class="input-group columns pull-right col-md-2 nopadding">
+    <input type="hidden" th:value="${likeName}" id="currLikeName" />
+    <input type="text" class="form-control" placeholder="输入接口名称关键字" id="likeName">
+    <span class="input-group-btn">
+        <button class="btn btn-success" type="button" onclick="search()">搜索</button>
+    </span>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
         <th>接口id</th>
         <th>接口名称</th>
         <th>接口描述</th>
+        <th>接口地址</th>
+        <th>创建时间</th>
+        <th>更新时间</th>
 <!--        <th>数据</th>-->
         <th>操作</th>
     </tr>
@@ -60,9 +70,12 @@
                 <textarea cols="20" rows="5" readonly class="form-control" th:text="${apido.desc}">
                 </textarea>
             </td>
+         <td th:text="'/api/'+${apido.id}" />
+        <td th:text="${#dates.format(apido.created, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#dates.format(apido.updated, 'yyyy-MM-dd')}"></td>
 <!--        <td th:text="${apido.data}"/>-->
         <td>
-        <a  class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" th:onclick="'javascript:edit(\''+${apido.pagename}+'\')'"><i class="fa fa-edit"></i></a>
+        <a  class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" th:onclick="'javascript:edit(\''+${apido.pagename}+'\',\''+${apido.id}+'\')'"><i class="fa fa-edit"></i></a>
         <a class="btn btn-warning btn-sm " href="#" mce_href="#" title="删除" th:onclick="'javascript:deleteById(\''+${apido.id}+'\',this)'"><i class="fa fa-remove"></i></a>
         </td>
         </span>
@@ -79,10 +92,48 @@
     </tbody>
 </table>
 
+<nav aria-label="Page navigation" style="float: right">
+    <ul class="pagination pagination-lg">
+        <li>
+            <a href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${page-1}+'\')'" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li th:each="nd,memberStat:${node}" th:switch="${nd}" th:class="${nd eq page}? 'active'" >
+
+                   <a th:case="${page}" style="background-color: cornflowerblue"  href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${nd}+'\')'" th:text="${nd}" ><span class="sr-only">(current)</span></a>
+
+                   <a  th:case="*" href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${nd}+'\')'" th:text="${nd}" ></a>
+
+            </li>
+
+
+
+
+        <li>
+            <a href="#" aria-label="Next" mce_href="#" th:onclick="'javascript:goPage(\''+${page+1}+'\')'">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
 <script>
 // <![CDATA[
-   function edit(id) {
-
+   function edit(pagename,id) {
+       if (pagename==null||pagename=="null"){
+           return;
+       }
+       layer.open({
+           type : 2,
+           title : '编辑',
+           maxmin : true,
+           shadeClose : false, // 点击遮罩关闭层
+           area : [ '800px', '520px' ],
+           content :  '/api/edit/' + pagename+ '/' +id // iframe的url
+       });
 
    }
    function deleteById(id,c) {
@@ -107,6 +158,24 @@
            });
        });
 
+
+   }
+
+   function goPage(page) {
+       var pg=[[${totalPage}]]
+       if (page>pg)return;
+       if (page<1)return;
+       var currLikeName=$("#currLikeName").val();
+       if (currLikeName=="null"||currLikeName==null){
+           location.href="/api/list?page="+page+"&rows=6";
+       }else {
+          location.href="/api/list?page="+page+"&rows=6&likeName="+currLikeName;
+       }
+
+   }
+   function search() {
+       var likeName=$("#likeName").val();
+       location.href="/api/list?likeName="+likeName;
 
    }
 // ]]>

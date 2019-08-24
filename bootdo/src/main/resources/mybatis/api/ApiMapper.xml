@@ -4,11 +4,37 @@
 <mapper namespace="com.bootdo.api.dao.ApiDao">
 
     <select id="selectAll" resultType="com.bootdo.api.domain.ApiDo">
-        select * from api
+        select * from api where `status`=0
     </select>
 
     <update id="deleteById" parameterType="long" >
         update api set status=1 where id=#{id}
     </update>
 
+
+    <insert id="saveApi" parameterType="com.bootdo.api.domain.ApiDo" >
+        INSERT INTO api(`name`,`desc`,`data`,`status`,`pagename`,`created`,`updated`)
+        VALUES(#{name},#{desc},#{data},#{status},#{pagename},#{created},#{updated})
+    </insert>
+
+    <select id="selectById" resultType="com.bootdo.api.domain.ApiDo" parameterType="long" >
+        select * from api where id=#{id}
+    </select>
+
+    <update id="updateApi" parameterType="com.bootdo.api.domain.ApiDo" >
+        update api set
+        `name`=#{name},
+        `desc`=#{desc},
+        `data`=#{data},
+        `status`=#{status},
+        `pagename`=#{pagename},
+        `created`=#{created},
+        `updated`=#{updated}
+        where id=#{id}
+    </update>
+
+    <select id="selectLikeName" parameterType="string" resultType="com.bootdo.api.domain.ApiDo">
+        select * from api
+        where `status`=0 and `name` like  CONCAT('%',#{likeName,jdbcType=VARCHAR},'%')
+    </select>
 </mapper>

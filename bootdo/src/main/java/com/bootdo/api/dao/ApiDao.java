@@ -11,4 +11,12 @@ public interface ApiDao {
 
     public void deleteById(Long id);
 
+    public void saveApi(ApiDo apiDo);
+
+    public ApiDo selectById(Long id);
+
+    public void updateApi(ApiDo apiDo);
+
+    public List<ApiDo> selectLikeName(String likeName);
+
 }
