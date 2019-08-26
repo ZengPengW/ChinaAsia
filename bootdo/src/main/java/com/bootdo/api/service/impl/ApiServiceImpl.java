@@ -21,6 +21,21 @@ public class ApiServiceImpl implements ApiService {
     private ApiDao apiDao;
 
     @Override
+    public void apiSave(ApiDo apiDo) {
+        apiDo.setCreated(new Date());
+        apiDo.setUpdated(apiDo.getCreated());
+        apiDo.setStatus(0);
+        apiDao.saveApi(apiDo);
+    }
+
+    @Override
+    public void apiUpdate(ApiDo apiDo) {
+        apiDo.setUpdated(new Date());
+        apiDo.setStatus(0);
+        apiDao.updateApi(apiDo);
+    }
+
+    @Override
     public List<ApiDo> selectAll() {
         return apiDao.selectAll();
     }
@@ -30,7 +45,7 @@ public class ApiServiceImpl implements ApiService {
         apiDao.deleteById(id);
     }
 
-    //待修改
+
     @Override
     public void saveImagesApi(ApiDo apiDo) {
 

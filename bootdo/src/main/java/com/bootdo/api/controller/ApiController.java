@@ -90,11 +90,18 @@ public class ApiController {
         return map;
     }
 
+    //修改页
     @RequestMapping("/api/edit/{pagename}/{id}")
     public String apiEdit(@PathVariable(value = "pagename") String pagename, @PathVariable(value = "id")Long id,Model model){
         ApiDo apiDo = apiService.selectById(id);
         model.addAttribute("apido", apiDo);
         return "api/edit/"+pagename;
+    }
+
+    //增加页
+    @RequestMapping("/api/add/{page}")
+    public String imageApiAddPage(Model model,@PathVariable(value = "page") String page){
+        return "api/add/"+page;
     }
 
 

@@ -1,5 +1,8 @@
 package com.bootdo.common.controller;
 
+import com.bootdo.api.utils.APIService;
+import com.bootdo.api.utils.HttpResult;
+import com.bootdo.api.utils.JsonUtils;
 import com.bootdo.common.config.BootdoConfig;
 import com.bootdo.common.domain.FileDO;
 import com.bootdo.common.service.FileService;
@@ -7,11 +10,13 @@ import com.bootdo.common.utils.*;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +32,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/common/sysFile")
 public class FileController extends BaseController {
+    @Value("${UPLOAD_URL}")
+    private  String UPLOAD_URL;
 
 	@Autowired
 	private FileService sysFileService;
@@ -143,17 +150,37 @@ public class FileController extends BaseController {
 		if ("test".equals(getUsername())) {
 			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
 		}
+        Map map;
 		String fileName = file.getOriginalFilename();
 		fileName = FileUtil.renameToUUID(fileName);
 		FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
 		try {
 			FileUtil.uploadFile(file.getBytes(), bootdoConfig.getUploadPath(), fileName);
+
+			//**********************************补充方法 插入图库地址*****************************************
+            String url=sysFile.getUrl();
+            url=url.substring(url.lastIndexOf("/")+1);
+            System.out.println("保存路劲："+bootdoConfig.getUploadPath()+url);
+            url=bootdoConfig.getUploadPath()+url;
+            File file1=new File(url);
+            APIService apiService=new APIService();
+
+            HttpResult httpResult = apiService.upload(UPLOAD_URL, file1);
+            //加载图片服务器地址的属性文件
+            String json=httpResult.getBody();
+            System.out.println(json);
+            map= JsonUtils.jsonToPojo(json,Map.class);
+            //响应数据
+//            result.put("error", 0);
+//            result.put("url", map.get("msg"));
+            //**********************************补充方法*****************************************
 		} catch (Exception e) {
 			return R.error();
 		}
 
-		if (sysFileService.save(sysFile) > 0) {
-			return R.ok().put("fileName",sysFile.getUrl());
+		if (map!=null&&sysFileService.save(sysFile) > 0) {
+			//return R.ok().put("fileName",sysFile.getUrl());
+            return R.ok().put("fileName",map.get("msg"));
 		}
 		return R.error();
 	}

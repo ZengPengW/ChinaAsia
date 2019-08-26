@@ -9,6 +9,15 @@ public class ImageAndParam implements Serializable {
     private String src;  // 图片地址
     private String href; //a 标签指向地址
     private String alt;//错误信息
+    private String title; //内容
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getSrc() {
         return src;

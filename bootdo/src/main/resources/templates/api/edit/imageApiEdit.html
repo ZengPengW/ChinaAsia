@@ -44,7 +44,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-3">
-                                <button type="button" class="btn btn-primary" id="mysubmint">提交</button>
+                                <button type="button" class="btn btn-primary" id="mysubmint">修改接口</button>
                             </div>
                         </div>
                     </form>
@@ -59,7 +59,7 @@
 <script th:inline="javascript">
     var v = [[${apido.data}]];
     v=JSON.parse(v);
-    console.log(v);
+  //  console.log(v);
     var str="";
     $.each(v.imgs, function(index,c) {
 

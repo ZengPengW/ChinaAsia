@@ -6,6 +6,16 @@ import java.util.List;
 
 public interface ApiService {
     /**
+     * 保存
+     * @return
+     */
+    public void apiSave(ApiDo apiDo);
+
+    /**
+     * 更新
+     */
+    public void apiUpdate(ApiDo apiDo);
+    /**
      * 查询所有
      * @return
      */
@@ -18,7 +28,7 @@ public interface ApiService {
     public void deleteById(Long id);
 
     /**
-     * 保存接口
+     * 保存通用图片接口
      * @param apiDo
      */
     public void saveImagesApi(ApiDo apiDo);

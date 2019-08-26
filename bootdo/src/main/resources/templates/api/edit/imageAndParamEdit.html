@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="id" name="id" th:value="${apido.id}"
+                               class="form-control" type="hidden">
+                        <input id="pagename" name="pagename"  th:value="${apido.pagename}"
+                               class="form-control" type="hidden">
+<!--                        <input id="created" name="id" th:value="${#dates.format(apido.created, 'yyyy-MM-dd')}"-->
+<!--                               class="form-control" type="hidden">-->
+<!--                        <input id="updated" name="id" th:value="${#dates.format(apido.updated, 'yyyy-MM-dd')}"-->
+<!--                               class="form-control" type="hidden">-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">接口名称：</label>
+                            <div class="col-sm-8">
+                                <input id="name" name="name" th:value="${apido.name}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">接口描述：</label>
+                            <div class="col-sm-8">
+                                <textarea cols="20" rows="5"  class="form-control" th:text="${apido.desc}" name="desc">
+                                </textarea>
+                            </div>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-sm-3 control-label">图片地址(多条以英文逗号分隔)：</label>-->
+<!--                            <div class="col-sm-8">-->
+<!--                                <textarea cols="20" rows="5"   class="form-control"  name="data" id="data">-->
+<!--                                </textarea>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+
+
+
+                        <div class="form-group" id="myst">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="button" class="btn btn-primary" id="mysubmint">修改接口</button>
+                            </div>
+                        </div>
+                    </form>
+                    <input  type="button" class="btn btn-primary"  value="添加图片" onclick="imgadd()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<!--<script type="text/javascript" src="/js/appjs/common/dict/edit.js">-->
+<!--</script>-->
+<script th:inline="javascript">
+    var indexs=0;//计录有几组
+    var v = [[${apido.data}]];
+    v=JSON.parse(v);
+    var domm="";
+    $.each(v.imgs,function (index,c) {
+        ++indexs;
+        domm+="                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"地址：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+index+"].src'\n" +
+            "                                       class='form-control' type='text' value='"+c.src+"'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"跳转地址：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+index+"].href'\n" +
+            "                                       class='form-control' type='text' value='"+c.href+"'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"Alt：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+index+"].alt'\n" +
+            "                                        class='form-control' type='text' value='"+c.alt+"'>\n" +
+            "                            </div>\n" +
+            "                        </div>"+
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"title：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+index+"].title'\n" +
+            "                                       class='form-control' type='text' value='"+c.title+"'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" ;
+
+    });
+
+    $("#myst").before(domm);
+
+
+
+
+
+
+
+
+
+    function imgadd(){
+
+        var domm=
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(indexs+1)+"地址：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+indexs+"].src'\n" +
+            "                                       class='form-control' type='text'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(indexs+1)+"跳转地址：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+indexs+"].href'\n" +
+            "                                       class='form-control' type='text'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" +
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(indexs+1)+"Alt：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+indexs+"].alt'\n" +
+            "                                        class='form-control' type='text'>\n" +
+            "                            </div>\n" +
+            "                        </div>"+
+            "                        <div class='form-group'>\n" +
+            "                            <label class='col-sm-3 control-label'>图片"+(indexs+1)+"title：</label>\n" +
+            "                            <div class='col-sm-8'>\n" +
+            "                                <input  name='imgs["+indexs+"].title'\n" +
+            "                                       class='form-control' type='text'>\n" +
+            "                            </div>\n" +
+            "                        </div>\n" ;
+        indexs++;
+        $("#myst").before(domm);
+    }
+
+    $(function(){
+        $("#mysubmint").click(function () {
+
+
+            $.post("/api/update/updateImagesAndParamApi",$("#signupForm").serialize(), function(data){
+                if(data.code == 0){
+                    parent.layer.msg("更新成功！！！");
+                    window.setTimeout(function () {
+                        parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                        parent.layer.close(index);
+                    },900);
+                }else{
+                    parent.layer.msg("更新失败！！！");
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>
