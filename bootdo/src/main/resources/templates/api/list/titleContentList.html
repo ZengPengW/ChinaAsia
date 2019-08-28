@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>标题&导航</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/css/plugins/jsTree/style.min.css" rel="stylesheet">
+    <link href="/css/plugins/jqTreeGrid/jquery.treegrid.css" rel="stylesheet">
+    <!--summernote css -->
+    <link href="/css/plugins/summernote/summernote-0.8.8.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="/js/plugins/layer/theme/default/layer.css?v=3.1.0" id="layuicss-layer"></head>
+
+        <script src="/js/jquery.min.js?v=2.1.4"></script>
+        <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+        <script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+        <script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+        <script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+        <script src="/js/plugins/validate/jquery.validate.min.js"></script>
+        <script src="/js/plugins/validate/messages_zh.min.js"></script>
+        <script src="/js/plugins/jsTree/jstree.min.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.min.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.extension.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.bootstrap3.js"></script>
+        <script src="/js/plugins/chosen/chosen.jquery.js"></script>
+        <script src="/js/plugins/layer/layer.js"></script>
+        <script src="/js/content.js?v=1.0.0"></script>
+        <!--summernote-->
+        <script src="/js/plugins/summernote/summernote.js"></script>
+        <script src="/js/plugins/summernote/summernote-zh-CN.min.js"></script>
+        <script src="/js/ajax-util.js"></script>
+
+<!--        &lt;!&ndash; vue &ndash;&gt;-->
+<!--        <script type="text/javascript" src="/js/vue.min.js"></script>-->
+
+<!--    <script src="/js/appjs/sys/menu/menu.js"></script>-->
+</head>
+<body>
+<div class="input-group columns pull-right col-md-2 nopadding">
+    <input type="hidden" th:value="${likeName}" id="currLikeName" />
+    <input type="text" class="form-control" placeholder="输入接口名称关键字" id="likeName">
+    <span class="input-group-btn">
+        <button class="btn btn-success" type="button" onclick="search()">搜索</button>
+    </span>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>标题id</th>
+        <th>标题名称</th>
+        <th>父标题</th>
+        <th>是否存在子标题</th>
+        <th>标题分类</th>
+        <th>携带的内容</th>
+        <th>目录级别</th>
+<!--        <th>数据</th>-->
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="apido,memberStat:${list}" >
+
+        <th scope="row" th:text="${apido.cid}"/>
+        <td th:text="${apido.tname}" />
+        <td th:text="${apido.parentName}==null?'无':${apido.parentName}" />
+
+        <td th:text="${apido.hasChildren eq 1}?'是':'否'" />
+        <td th:text="${apido.tclass}" />
+        <td th:text="${apido.content}" />
+        <td th:text="${apido.level}" />
+
+<!--        <td th:text="${apido.data}"/>-->
+        <td>
+<!--        <a  class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" th:onclick="'javascript:edit(\''+${pagename}+'\',\''+${apido.cid}+'\')'"><i class="fa fa-edit"></i></a>-->
+        <a class="btn btn-warning btn-sm " href="#" mce_href="#" title="删除" th:onclick="'javascript:deleteById(\''+${apido.cid}+'\',this)'"><i class="fa fa-remove"></i></a>
+        </td>
+
+     </tr>
+
+<!--    <tr>-->
+<!--        <th scope="row">1</th>-->
+<!--        <td>Mark</td>-->
+<!--        <td>Otto</td>-->
+<!--        <td>@mdo</td>-->
+<!--        <td><a class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" onclick="edit('1')"><i class="fa fa-edit"></i></a></td>-->
+<!--    </tr>-->
+
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation" style="float: right">
+    <ul class="pagination pagination-lg">
+        <li>
+            <a href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${page-1}+'\')'" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li th:each="nd,memberStat:${node}" th:switch="${nd}" th:class="${nd eq page}? 'active'" >
+
+                   <a th:case="${page}" style="background-color: cornflowerblue"  href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${nd}+'\')'" th:text="${nd}" ><span class="sr-only">(current)</span></a>
+
+                   <a  th:case="*" href="#" mce_href="#" th:onclick="'javascript:goPage(\''+${nd}+'\')'" th:text="${nd}" ></a>
+
+            </li>
+
+
+
+
+        <li>
+            <a href="#" aria-label="Next" mce_href="#" th:onclick="'javascript:goPage(\''+${page+1}+'\')'">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+<script>
+// <![CDATA[
+//    function edit(pagename,id) {
+//        if (pagename==null||pagename=="null"){
+//            return;
+//        }
+//        layer.open({
+//            type : 2,
+//            title : '编辑',
+//            maxmin : true,
+//            shadeClose : false, // 点击遮罩关闭层
+//            area : [ '800px', '520px' ],
+//            content :  '/api/edit/' + pagename+ '/' +id // iframe的url
+//        });
+//
+//    }
+   function deleteById(id,c) {
+
+       layer.confirm('确定要删除选中的记录？\r\n 删除的同时会删除子目录', {
+           btn : [ '确定', '取消' ]
+       }, function() {
+           $.ajax({
+               url : "/titlecontent/delete",
+               type : "post",
+               data : {
+                   'cid' : id
+               },
+               success : function(r) {
+                   if (r.code==0) {
+                       layer.msg("删除成功！");
+                       window.setTimeout(function () {
+                           location.reload();
+                       },600);
+                   }else{
+                       layer.msg("删除失败！");
+                   }
+               }
+           });
+       });
+
+
+   }
+
+   function goPage(page) {
+       var pg=[[${totalPage}]]
+       if (page>pg)return;
+       if (page<1)return;
+       var currLikeName=$("#currLikeName").val();
+       if (currLikeName=="null"||currLikeName==null){
+           location.href="/titlecontent/list?page="+page+"&rows=6";
+       }else {
+          location.href="/titlecontent/list?page="+page+"&rows=6&likeName="+currLikeName;
+       }
+
+   }
+   function search() {
+       var likeName=$("#likeName").val();
+       location.href="/titlecontent/list?likeName="+likeName;
+
+   }
+// ]]>
+</script>
+
+</body>
+</html>

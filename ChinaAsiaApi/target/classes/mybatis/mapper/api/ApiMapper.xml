@@ -12,4 +12,5 @@
         select * from api where id=#{id} and `status`=0
     </select>
 
+
 </mapper>

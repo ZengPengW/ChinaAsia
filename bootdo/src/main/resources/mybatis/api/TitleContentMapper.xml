@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.api.dao.TitleContentDao">
+
+	<select id="get" resultType="com.bootdo.api.domain.TitleContentDO">
+		select `cid`,`tname`,`has_children`,`has_parent`,`tid`,`content`,`level` from title_content where cid = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.api.domain.TitleContentDO">
+		select `cid`,`tname`,`has_children`,`has_parent`,`tid`,`content`,`level` from title_content
+        <where>  
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="tname != null and tname != ''"> and tname = #{tname} </if>
+		  		  <if test="hasChildren != null and hasChildren != ''"> and has_children = #{hasChildren} </if>
+		  		  <if test="hasParent != null and hasParent != ''"> and has_parent = #{hasParent} </if>
+		  		  <if test="tid != null and tid != ''"> and tid = #{tid} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by cid desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from title_content
+		 <where>  
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="tname != null and tname != ''"> and tname = #{tname} </if>
+		  		  <if test="hasChildren != null and hasChildren != ''"> and has_children = #{hasChildren} </if>
+		  		  <if test="hasParent != null and hasParent != ''"> and has_parent = #{hasParent} </if>
+		  		  <if test="tid != null and tid != ''"> and tid = #{tid} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.api.domain.TitleContentDO" useGeneratedKeys="true" keyProperty="cid">
+		insert into title_content
+		(
+			`tname`, 
+			`has_children`, 
+			`has_parent`, 
+			`tid`, 
+			`content`,
+			`level`
+		)
+		values
+		(
+			#{tname}, 
+			#{hasChildren}, 
+			#{hasParent}, 
+			#{tid}, 
+			#{content},
+			#{level}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.api.domain.TitleContentDO">
+		update title_content 
+		<set>
+			<if test="tname != null">`tname` = #{tname}, </if>
+			<if test="hasChildren != null">`has_children` = #{hasChildren}, </if>
+			<if test="hasParent != null">`has_parent` = #{hasParent}, </if>
+			<if test="tid != null">`tid` = #{tid}, </if>
+			<if test="content != null">`content` = #{content},</if>
+            <if test="level != null">`content` = #{level}</if>
+		</set>
+		where cid = #{cid}
+	</update>
+	
+	<delete id="remove">
+		delete from title_content where cid = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from title_content where cid in 
+		<foreach item="cid" collection="array" open="(" separator="," close=")">
+			#{cid}
+		</foreach>
+	</delete>
+
+    <select id="selectMaxLevelByClassId" parameterType="integer" resultType="integer" >
+        select max(`level`) from title_content where `tid`=#{tid}
+    </select>
+
+    <select id="selectParentListByLevel" parameterType="com.bootdo.api.domain.TitleContentDO" resultType="com.bootdo.api.domain.TitleContentDO">
+        select * from title_content where `level`=#{level} and `tid`=#{tid}
+    </select>
+
+    <select id="selectTitleContentList" resultType="com.bootdo.api.pojo.TitleContentTable" >
+         SELECT c1.`cid`,c1.`tname`,c2.`tname` parent_name,c1.`has_children`,c1.`content`,c1.`level` ,c1.tclass
+         FROM
+        (SELECT t1.`cid`,t1.`tname`,t1.`has_children`,t1.`has_parent`,t1.`content`,t1.`level`,t2.`tname` tclass
+        FROM title_content t1, title_class t2 WHERE t1.`tid`=t2.`tid`) c1
+        LEFT OUTER JOIN title_content c2
+        ON c1.`has_parent`=c2.`cid`
+
+
+    </select>
+
+    <select id="selectTitleContentListByLikeName" resultType="com.bootdo.api.pojo.TitleContentTable" parameterType="string">
+        SELECT c1.`cid`,c1.`tname`,c2.`tname` parent_name,c1.`has_children`,c1.`content`,c1.`level` ,c1.tclass
+        FROM
+        (SELECT t1.`cid`,t1.`tname`,t1.`has_children`,t1.`has_parent`,t1.`content`,t1.`level`,t2.`tname` tclass
+        FROM title_content t1, title_class t2 WHERE t1.`tid`=t2.`tid`) c1
+        LEFT OUTER JOIN title_content c2
+        ON c1.`has_parent`=c2.`cid`
+        WHERE c1.`tname` LIKE CONCAT('%',#{likeName,jdbcType=VARCHAR},'%')
+
+    </select>
+
+
+</mapper>

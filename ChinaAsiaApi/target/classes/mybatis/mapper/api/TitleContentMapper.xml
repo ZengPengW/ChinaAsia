@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chinaasia.mapper.TitleContentDao">
+
+<select id="selectDirectoryByParentIdAndClassName" resultType="com.chinaasia.pojo.TitleContentTable">
+SELECT o.`cid`,o.`has_parent`,o.`content`,o.`has_children`,o.`level`,o.`tname`,c.`tname` tclass
+FROM title_class c,title_content o
+WHERE c.`tname`=#{className} AND o.`has_parent`=#{parentId} AND o.`tid`=c.`tid`
+</select>
+
+</mapper>
