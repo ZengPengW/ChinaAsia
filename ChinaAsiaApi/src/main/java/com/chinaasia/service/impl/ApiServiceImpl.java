@@ -30,5 +30,10 @@ public class ApiServiceImpl implements ApiService {
         return apiDao.selectById(id);
     }
 
+    @Override
+    public List<ApiDo> selectByName(String name) {
+        return apiDao.selectByName(name);
+    }
+
 
 }

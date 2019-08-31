@@ -55,6 +55,7 @@ public class TitleContentServiceImpl implements TitleContentService {
 	
 	@Override
 	public int remove(Long cid){
+
 		return titleContentDao.remove(cid);
 	}
 	

@@ -12,5 +12,7 @@
         select * from api where id=#{id} and `status`=0
     </select>
 
-
+    <select id="selectByName" parameterType="string" resultType="com.chinaasia.pojo.ApiDo">
+        select * from api where `name`=#{name} and `status`=0
+    </select>
 </mapper>

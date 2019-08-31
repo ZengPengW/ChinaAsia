@@ -142,7 +142,11 @@ public class TitleContentController {
         //设置页码
         List<Long> node=new ArrayList<>();
 
-        if (page-2>0&&page+2<totalPage){
+        if (page==1&&totalPage>=5){
+            for (long i = 1; i <=5; i++) {
+                node.add(i);
+            }
+        }else if (page-2>0&&page+2<totalPage){
             for (long i = page-2; i <=page+2; i++) {
                 node.add(i);
             }
