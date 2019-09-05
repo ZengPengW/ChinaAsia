@@ -19,6 +19,8 @@ public interface ContentDao {
 	ContentDO get(Long cid);
 	
 	List<ContentDO> list(Map<String,Object> map);
+
+    List<ContentDO> selectAll(Map<String, Object> map);
 	
 	int count(Map<String,Object> map);
 	

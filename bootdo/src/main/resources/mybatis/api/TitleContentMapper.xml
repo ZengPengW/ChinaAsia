@@ -114,6 +114,7 @@
         LEFT OUTER JOIN title_content c2
         ON c1.`has_parent`=c2.`cid`
         WHERE c1.`tname` LIKE CONCAT('%',#{likeName,jdbcType=VARCHAR},'%')
+        OR c1.tclass LIKE CONCAT('%',#{likeName,jdbcType=VARCHAR},'%')
 
     </select>
 

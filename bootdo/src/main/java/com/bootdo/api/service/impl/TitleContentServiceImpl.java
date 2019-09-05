@@ -4,6 +4,7 @@ import com.bootdo.api.pojo.TitleContentTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,25 @@ public class TitleContentServiceImpl implements TitleContentService {
 	
 	@Override
 	public int remove(Long cid){
+        TitleContentDO contentDO = get(cid);
+        int a=titleContentDao.remove(cid);
+        if (contentDO.getHasParent()!=null&&contentDO.getHasParent()>0){
+            Map<String,Object> map=new HashMap<>();
 
-		return titleContentDao.remove(cid);
+            map.put("hasParent",contentDO.getHasParent());
+
+
+
+            List<TitleContentDO> list = titleContentDao.list(map);
+            if (list==null||list.size()<=0){
+                TitleContentDO parent=new TitleContentDO();
+                parent.setHasChildren(0);
+                parent.setCid(Long.valueOf(contentDO.getHasParent()));
+                titleContentDao.update(parent);
+            }
+        }
+
+        return a;
 	}
 	
 	@Override

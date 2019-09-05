@@ -3,15 +3,18 @@ package com.bootdo;
 import com.bootdo.api.pojo.ImageApi;
 import com.bootdo.api.utils.JsonUtils;
 import com.github.pagehelper.PageHelper;
+import org.apache.solr.client.solrj.SolrClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
@@ -59,4 +62,11 @@ public class BootdoApplication {
         return pageHelper;
 
     }
+
+    @Bean
+    @ConditionalOnMissingBean(SolrTemplate.class)
+    public SolrTemplate solrTemplate(SolrClient solrClient) {
+        return new SolrTemplate(solrClient);
+    }
+
 }

@@ -76,7 +76,7 @@
 
 <!--        <td th:text="${apido.data}"/>-->
         <td>
-<!--        <a  class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" th:onclick="'javascript:edit(\''+${pagename}+'\',\''+${apido.cid}+'\')'"><i class="fa fa-edit"></i></a>-->
+       <a  class="btn btn-primary btn-sm " href="#" mce_href="#" title="编辑" th:onclick="'javascript:edit(\''+${apido.cid}+'\')'"><i class="fa fa-edit"></i></a>
         <a class="btn btn-warning btn-sm " href="#" mce_href="#" title="删除" th:onclick="'javascript:deleteById(\''+${apido.cid}+'\',this)'"><i class="fa fa-remove"></i></a>
         </td>
 
@@ -121,22 +121,20 @@
 </nav>
 
 
-<script>
-// <![CDATA[
-//    function edit(pagename,id) {
-//        if (pagename==null||pagename=="null"){
-//            return;
-//        }
-//        layer.open({
-//            type : 2,
-//            title : '编辑',
-//            maxmin : true,
-//            shadeClose : false, // 点击遮罩关闭层
-//            area : [ '800px', '520px' ],
-//            content :  '/api/edit/' + pagename+ '/' +id // iframe的url
-//        });
-//
-//    }
+<script th:inline="javascript">
+
+   function edit(cid) {
+
+       layer.open({
+           type : 2,
+           title : '编辑',
+           maxmin : true,
+           shadeClose : false, // 点击遮罩关闭层
+           area : [ '800px', '520px' ],
+           content :  '/api/titleContent/edit/titleContentEdit?cid=' +cid // iframe的url
+       });
+
+   }
    function deleteById(id,c) {
 
        layer.confirm('确定要删除选中的记录？\r\n 删除的同时会删除子目录', {
@@ -181,7 +179,7 @@
        location.href="/titlecontent/list?likeName="+likeName;
 
    }
-// ]]>
+
 </script>
 
 </body>

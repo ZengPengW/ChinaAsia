@@ -84,6 +84,6 @@ public class PictureController {
 
 	@RequestMapping("/picturebed")
 	public String pictureBed(){
-	    return "/picturebed/pictureBed";
+	    return "picturebed/pictureBed";
     }
 }

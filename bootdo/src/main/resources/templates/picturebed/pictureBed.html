@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>图床</title>
@@ -19,7 +19,7 @@
         <form enctype="multipart/form-data" id="tuchuang-form" onsubmit="return false;">
             <button type="button" onclick="file.click();" class="btn btn-default" id="toUploaded">上传完成！您可以继续选择图片上传(ﾉﾟ▽ﾟ)ﾉ</button>
             <input type="file" name="file" id="file" style="display:none" accept="image/*" multiple="multiple">
-                    <label class="radio-inline"><input name="type" type="radio" value="Sina" checked="" style="display:none;"></label>
+                    <label class="radio-inline"><input name="type" type="radio" value="Sohu" checked="" style="display:none;"></label>
             <div class="form-group text-center">
                 <button class="btn btn-primary" onclick="doUpload();return false;" style="margin: 15px auto">
                     开始上传
@@ -70,7 +70,7 @@ function doUpload() {
                     $("#toUploaded").html("上传完成！您可以继续选择图片上传(ﾉﾟ▽ﾟ)ﾉ");
                 }
                 
-                $("#output").val($("#output").val() + '[img]'+data.msg +'[/img]' + "\n");
+                $("#output").val($("#output").val() + ''+data.msg +'' + "\n");
                 $("#output").scrollTop($("#output")[0].scrollHeight);
                 
             },

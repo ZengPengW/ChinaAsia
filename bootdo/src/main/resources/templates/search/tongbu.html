@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>接口列表</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/css/plugins/jsTree/style.min.css" rel="stylesheet">
+    <link href="/css/plugins/jqTreeGrid/jquery.treegrid.css" rel="stylesheet">
+    <!--summernote css -->
+    <link href="/css/plugins/summernote/summernote-0.8.8.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="/js/plugins/layer/theme/default/layer.css?v=3.1.0" id="layuicss-layer"></head>
+
+        <script src="/js/jquery.min.js?v=2.1.4"></script>
+        <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+        <script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+        <script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+        <script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+        <script src="/js/plugins/validate/jquery.validate.min.js"></script>
+        <script src="/js/plugins/validate/messages_zh.min.js"></script>
+        <script src="/js/plugins/jsTree/jstree.min.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.min.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.extension.js"></script>
+        <script src="/js/plugins/jqTreeGrid/jquery.treegrid.bootstrap3.js"></script>
+        <script src="/js/plugins/chosen/chosen.jquery.js"></script>
+        <script src="/js/plugins/layer/layer.js"></script>
+        <script src="/js/content.js?v=1.0.0"></script>
+        <!--summernote-->
+        <script src="/js/plugins/summernote/summernote.js"></script>
+        <script src="/js/plugins/summernote/summernote-zh-CN.min.js"></script>
+        <script src="/js/ajax-util.js"></script>
+
+<!--        &lt;!&ndash; vue &ndash;&gt;-->
+<!--        <script type="text/javascript" src="/js/vue.min.js"></script>-->
+
+<!--    <script src="/js/appjs/sys/menu/menu.js"></script>-->
+</head>
+<body>
+
+
+    <div style="text-align: center;">
+    <span class="input-group-btn">
+        <button class="btn btn-success" type="button" onclick="tongbu()">同步索引库</button>
+    </span>
+    </div>
+
+
+
+<script th:inline="javascript">
+function  tongbu() {
+
+
+    layer.confirm('同步耗时较长，请勿退出当前页面？', {
+        btn : [ '确定', '取消' ]
+    }, function() {
+        $.ajax({
+            url : "/search/importAllSearchItems",
+            type : "get",
+            success : function(r) {
+                if (r.code==0) {
+                    layer.msg("同步成功！");
+
+                }else{
+                    layer.msg("同步失败！");
+                }
+            }
+        });
+    });
+}
+</script>
+
+</body>
+</html>

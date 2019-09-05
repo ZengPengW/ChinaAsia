@@ -1,5 +1,6 @@
 package com.bootdo.blog.service.impl;
 
+import com.bootdo.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ import com.bootdo.blog.service.ContentService;
 public class ContentServiceImpl implements ContentService {
 	@Autowired
 	private ContentDao bContentMapper;
+
+	@Autowired
+	private SearchService searchService;
 	
 	@Override
 	public ContentDO get(Long cid){
@@ -34,22 +38,46 @@ public class ContentServiceImpl implements ContentService {
 	
 	@Override
 	public int save(ContentDO bContent){
-		return bContentMapper.save(bContent);
+	    int status=bContentMapper.save(bContent);
+        try {
+            searchService.save(bContent);//同步索引
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
 	}
 	
 	@Override
 	public int update(ContentDO bContent){
-		return bContentMapper.update(bContent);
+        int status=bContentMapper.update(bContent);
+        try {
+            searchService.updateItemByIds(bContent.getCid());//同步索引
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
 	}
 	
 	@Override
 	public int remove(Long cid){
-		return bContentMapper.remove(cid);
-	}
+        int status= bContentMapper.remove(cid);
+        try {
+            searchService.deleteItemByIds(cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 	
 	@Override
 	public int batchRemove(Long[] cids){
-		return bContentMapper.batchRemove(cids);
+        int status=bContentMapper.batchRemove(cids);
+        try {
+            searchService.deleteItemByIds(cids);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
 	}
 	
 }

@@ -33,6 +33,8 @@ public class ContentDO implements Serializable {
 	private String tags;
 	//分类
 	private String categories;
+	//用于搜索展示的图片
+	private String image;
 	//
 	private Integer hits;
 	//评论数量
@@ -52,7 +54,15 @@ public class ContentDO implements Serializable {
 	//修改时间
 	private Date gtmModified;
 
-	/**
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
 	 * 设置：
 	 */
 	public void setCid(Long cid) {

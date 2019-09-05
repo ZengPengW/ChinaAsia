@@ -158,7 +158,7 @@ public class FileController extends BaseController {
 			FileUtil.uploadFile(file.getBytes(), bootdoConfig.getUploadPath(), fileName);
 
 			//**********************************补充方法 插入图库地址*****************************************
-            String url=sysFile.getUrl();
+          /*  String url=sysFile.getUrl();
             url=url.substring(url.lastIndexOf("/")+1);
             System.out.println("保存路劲："+bootdoConfig.getUploadPath()+url);
             url=bootdoConfig.getUploadPath()+url;
@@ -169,7 +169,7 @@ public class FileController extends BaseController {
             //加载图片服务器地址的属性文件
             String json=httpResult.getBody();
             System.out.println(json);
-            map= JsonUtils.jsonToPojo(json,Map.class);
+            map= JsonUtils.jsonToPojo(json,Map.class);*/
             //响应数据
 //            result.put("error", 0);
 //            result.put("url", map.get("msg"));
@@ -178,10 +178,14 @@ public class FileController extends BaseController {
 			return R.error();
 		}
 
-		if (map!=null&&sysFileService.save(sysFile) > 0) {
-			//return R.ok().put("fileName",sysFile.getUrl());
-            return R.ok().put("fileName",map.get("msg"));
-		}
+//		if (map!=null&&sysFileService.save(sysFile) > 0) {
+//            return R.ok().put("fileName",map.get("msg"));
+//        }
+        String url="";
+		url+=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+        if (sysFileService.save(sysFile) > 0) {
+            return R.ok().put("fileName",url+sysFile.getUrl());
+        }
 		return R.error();
 	}
 

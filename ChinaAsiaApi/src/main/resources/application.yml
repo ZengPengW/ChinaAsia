@@ -12,10 +12,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/bootdo?useUnicode=true&characterEncoding=utf8
-      #platform: mysql
+      url: jdbc:mysql://172.16.2.12:3306/bootdo?useUnicode=true&characterEncoding=utf8&useSSL=false
       username: root
-      password: 147258
+      password: 123456
       driver-class-name: com.mysql.jdbc.Driver #或者org.gjt.mm.mysql.Driver   
       #druid连接池配置
       initialSize: 5 #初始化个数

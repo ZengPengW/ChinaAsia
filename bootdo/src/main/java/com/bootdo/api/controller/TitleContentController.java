@@ -12,15 +12,9 @@ import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -46,6 +40,13 @@ public class TitleContentController {
         return "api/add/"+page;
     }
 
+    //修改页
+    @RequestMapping("/api/titleContent/edit/{page}")
+    public String imageApiEditPage(Model model, @PathVariable(value = "page") String page, Long cid){
+        TitleContentDO contentDO = titleContentService.get(cid);
+        model.addAttribute("contentDO",contentDO);
+        return "api/edit/"+page;
+    }
 
     @RequestMapping("/api/titleContent/level/{tid}")
     @ResponseBody
@@ -146,15 +147,15 @@ public class TitleContentController {
             for (long i = 1; i <=5; i++) {
                 node.add(i);
             }
-        }else if (page-2>0&&page+2<totalPage){
+        }else if (page-2>0&&page+2<=totalPage){
             for (long i = page-2; i <=page+2; i++) {
                 node.add(i);
             }
-        }else if (page-1>0&&page+3<totalPage){
+        }else if (page-1>0&&page+3<=totalPage){
             for (long i = page-1; i <=page+3; i++) {
                 node.add(i);
             }
-        }else if (page-3>0&&page+1<totalPage){
+        }else if (page-3>0&&page+1<=totalPage){
             for (long i = page-3; i <=page+1; i++) {
                 node.add(i);
             }
@@ -181,13 +182,29 @@ public class TitleContentController {
         Map msg=new HashMap();
 
         try {
-            map.put("hasParent",cid);
-            List<TitleContentDO> list = titleContentService.list(map);
+
             List<Long> cids=new ArrayList<>();
-            cids.add(Long.valueOf(cid));
-            for (TitleContentDO t:list) {
-                cids.add(t.getCid());
+          //  cids.add(Long.valueOf(cid));
+
+            Queue<Long> queue=new LinkedList<>();
+            queue.offer(Long.valueOf(cid));
+            //把所有相关的节点加入队列
+            while (!queue.isEmpty()){
+                long c=queue.poll();
+                map.put("hasParent",c);
+                List<TitleContentDO> list = titleContentService.list(map);
+                if (list!=null&&list.size()>0){
+                    for (TitleContentDO t:list) {
+                        cids.add(t.getCid());
+                        queue.offer(t.getCid());
+                    }
+                }
+
             }
+
+          //  TitleContentDO titleContentDO = titleContentService.get(Long.valueOf(cid));
+            titleContentService.remove(Long.valueOf(cid));
+
             if (cids.size()>0){
                 Long [] cidss=new Long[cids.size()];
                 int i=0;
@@ -196,6 +213,7 @@ public class TitleContentController {
                 }
                 titleContentService.batchRemove(cidss);
             }
+
             msg.put("code",0);
         }catch (Exception e){
             msg.put("code",1);
@@ -204,6 +222,20 @@ public class TitleContentController {
 
         return  msg;
 
+
+    }
+
+    @PostMapping("/edit/titlecontent")
+    @ResponseBody
+    public Map update(TitleContentDO titleContentDO){
+        Map msg=new HashMap();
+        try {
+            titleContentService.update(titleContentDO);
+            msg.put("code",0);
+        }catch (Exception e){
+            msg.put("code",1);
+        }
+        return  msg;
 
     }
 }

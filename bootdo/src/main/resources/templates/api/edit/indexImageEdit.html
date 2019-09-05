@@ -65,14 +65,15 @@
     v=JSON.parse(v);
     var domm="";
     $.each(v,function (index,c) {
+        var bs=null;
 
-        var bs=c.head+"|||";
+        if (c.head!=null&&c.head!="null"&&c.head.length>0) bs=c.head+"|||";
         $.each(c.body, function(index,c) {
 
-            bs+=c+"|||";
+            if (bs!=null&&bs!="null")bs+=c+"|||";
 
         });
-
+        if (bs==null||bs=="null")bs="";
         ++indexs;
         domm+="                        <div class='form-group'>\n" +
             "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"地址：</label>\n" +
@@ -84,8 +85,10 @@
             "                        <div class='form-group'>\n" +
             "                            <label class='col-sm-3 control-label'>图片"+(index+1)+"跳转(多条英文逗号隔开)：</label>\n" +
             "                            <div class='col-sm-8'>\n" +
-            "                                <input  name='imgs["+index+"].href'\n" +
-            "                                       class='form-control' type='text' value='"+c.url+"'>\n" +
+            // "                                <input  name='imgs["+index+"].href'\n" +
+            // "                                       class='form-control' type='text' value='"+c.url+"'>\n" +
+            "<textarea cols='20' rows='5'   class='form-control'  name='imgs["+index+"].href' >\n" +
+             +c.url+"</textarea>"+
             "                            </div>\n" +
             "                        </div>\n" +
             "                        <div class='form-group'>\n" +
@@ -98,8 +101,10 @@
             "                        <div class='form-group'>\n" +
             "                            <label class='col-sm-3 control-label'>"+(index+1)+"title(多条以 ||| 隔开,第一条视为标题)：</label>\n" +
             "                            <div class='col-sm-8'>\n" +
-            "                                <input  name='imgs["+index+"].title'\n" +
-            "                                       class='form-control' type='text' value='"+bs+"'>\n" +
+            // "                                <input  name='imgs["+index+"].title'\n" +
+            // "                                       class='form-control' type='text' value='"+bs+"'>\n" +
+            "<textarea cols='20' rows='5'   class='form-control'  name='imgs["+index+"].title' >\n" +
+            bs+"</textarea>"+
             "                            </div>\n" +
             "                        </div>\n" ;
 
@@ -128,8 +133,10 @@
             "                        <div class='form-group'>\n" +
             "                            <label class='col-sm-3 control-label'>图片"+(indexs+1)+"跳转(多条英文逗号隔开)：</label>\n" +
             "                            <div class='col-sm-8'>\n" +
-            "                                <input  name='imgs["+indexs+"].href'\n" +
-            "                                       class='form-control' type='text'>\n" +
+            // "                                <input  name='imgs["+indexs+"].href'\n" +
+            // "                                       class='form-control' type='text'>\n" +
+            "<textarea cols='20' rows='5'   class='form-control'  name='imgs["+index+"].href' >\n" +
+            "                                </textarea>"+
             "                            </div>\n" +
             "                        </div>\n" +
             "                        <div class='form-group'>\n" +
@@ -142,8 +149,10 @@
             "                        <div class='form-group'>\n" +
             "                            <label class='col-sm-3 control-label'>"+(indexs+1)+"title(多条以 ||| 隔开)：</label>\n" +
             "                            <div class='col-sm-8'>\n" +
-            "                                <input  name='imgs["+indexs+"].title'\n" +
-            "                                       class='form-control' type='text'>\n" +
+            // "                                <input  name='imgs["+indexs+"].title'\n" +
+            // "                                       class='form-control' type='text'>\n" +
+            "<textarea cols='20' rows='5'   class='form-control'  name='imgs["+index+"].title' >\n" +
+            "                                </textarea>"+
             "                            </div>\n" +
             "                        </div>\n" ;
         indexs++;

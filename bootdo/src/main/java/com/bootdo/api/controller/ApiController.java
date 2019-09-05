@@ -55,15 +55,15 @@ public class ApiController {
             for (long i = 1; i <=5; i++) {
                 node.add(i);
             }
-        }else if (page-2>0&&page+2<totalPage){
+        }else if (page-2>0&&page+2<=totalPage){
             for (long i = page-2; i <=page+2; i++) {
                 node.add(i);
             }
-        }else if (page-1>0&&page+3<totalPage){
+        }else if (page-1>0&&page+3<=totalPage){
             for (long i = page-1; i <=page+3; i++) {
                 node.add(i);
             }
-        }else if (page-3>0&&page+1<totalPage){
+        }else if (page-3>0&&page+1<=totalPage){
             for (long i = page-3; i <=page+1; i++) {
                 node.add(i);
             }

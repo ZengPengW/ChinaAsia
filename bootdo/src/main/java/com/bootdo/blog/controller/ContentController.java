@@ -13,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 文章内容
@@ -91,7 +89,9 @@ public class ContentController extends BaseController {
 		if (count > 0) {
 			return R.ok().put("cid", bContent.getCid());
 		}
-		return R.error();
+
+
+        return R.error();
 	}
 
 	/**
