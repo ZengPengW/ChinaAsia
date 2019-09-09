@@ -57,7 +57,7 @@ layui.define('layer' , function(exports){
   
   //默认配置
   Class.prototype.config = {
-    accept: 'images' //允许上传的文件类型：images/file/video/audio
+    accept: 'images/file/video/audio' //允许上传的文件类型：images/file/video/audio
     ,exts: '' //允许上传的文件后缀名
     ,auto: true //是否选完文件后自动上传
     ,bindAction: '' //手动上传触发的元素
@@ -353,7 +353,7 @@ layui.define('layer' , function(exports){
           
         }
       });
-      if(limitSize) return that.msg('文件不能超过'+ limitSize);
+   //   if(limitSize) return that.msg('文件不能超过'+ limitSize);
     }
     send();
   };

@@ -32,7 +32,7 @@ public class ApiController {
         PageHelper.startPage(Math.toIntExact(page), rows);
         List<ApiDo> list;
         if (likeName!=null&&likeName.trim().length()>0){
-            System.out.println(likeName);
+          //  System.out.println(likeName);
             list=apiService.selectLikeName(likeName);
         }else {
             list = apiService.selectAll();

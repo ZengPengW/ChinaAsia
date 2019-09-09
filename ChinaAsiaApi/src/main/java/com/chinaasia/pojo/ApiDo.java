@@ -23,6 +23,15 @@ public class ApiDo implements Serializable {
     private String pagename;//当前接口修改页
     private Date created; //创建时间
     private Date updated; //更新时间
+    private String icon; //图片
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public Date getCreated() {
         return created;

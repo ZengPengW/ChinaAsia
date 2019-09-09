@@ -13,6 +13,8 @@
                                class="form-control" type="hidden">
                         <input id="pagename" name="pagename"  th:value="${apido.pagename}"
                                class="form-control" type="hidden">
+                        <input id="created" name="created"  th:value="${#dates.format(apido.created, 'yyyy-MM-dd HH:mm:ss')}"
+                               class="form-control" type="hidden">
 <!--                        <input id="created" name="id" th:value="${#dates.format(apido.created, 'yyyy-MM-dd')}"-->
 <!--                               class="form-control" type="hidden">-->
 <!--                        <input id="updated" name="id" th:value="${#dates.format(apido.updated, 'yyyy-MM-dd')}"-->

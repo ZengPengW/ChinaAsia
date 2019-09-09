@@ -19,11 +19,21 @@
         <form enctype="multipart/form-data" id="tuchuang-form" onsubmit="return false;">
             <button type="button" onclick="file.click();" class="btn btn-default" id="toUploaded">上传完成！您可以继续选择图片上传(ﾉﾟ▽ﾟ)ﾉ</button>
             <input type="file" name="file" id="file" style="display:none" accept="image/*" multiple="multiple">
-                    <label class="radio-inline"><input name="type" type="radio" value="Sohu" checked="" style="display:none;"></label>
+                    <label class="radio-inline"><input name="type" id="tupian" type="radio" value="Sina" checked="" style="display:none;"></label>
             <div class="form-group text-center">
+                <label class="col-sm-3 control-label">请选择图床种类（优先新浪）：</label>
+                <select id="imagesClass" class="form-control" onchange="imagesClassChange()">
+                    <option value="Sina">Sina</option>
+                    <option value="Sougou">Sougou</option>
+                    <option value="Baidu">Baidu</option>
+                    <option value="Sohu">Sohu</option>
+                </select>
+                <br>
                 <button class="btn btn-primary" onclick="doUpload();return false;" style="margin: 15px auto">
                     开始上传
                 </button>
+
+
             </div>
             <textarea id="output" class="form-control" placeholder="上传后全选复制此处的 UBB 代码即可"></textarea>
         </form>
@@ -44,6 +54,13 @@ $(function () {
         $("#toUploaded").html("您选择了 " + filePaths.length + " 个文件(/≧▽≦)/~")
     })
 });
+
+function imagesClassChange() {
+    var imageClass=$("#imagesClass").val();
+    $("#tupian").val(imageClass);
+
+}
+
 function doUpload() {
     var formData = new FormData();
     var files = $("#file")[0].files;

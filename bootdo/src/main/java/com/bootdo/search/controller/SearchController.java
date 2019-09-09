@@ -42,7 +42,7 @@ public class SearchController {
     //搜索
     @RequestMapping("/search")
     @ResponseBody
-    public SearchResult search(@RequestParam(defaultValue="1")Integer page, @RequestParam(name="q") String queryString, Model model) throws Exception {
+    public SearchResult search(@RequestParam(defaultValue="1")Integer page, @RequestParam(name="q",required = false) String queryString, Model model) throws Exception {
 
         //查询商品
         SearchResult result = searchService.search(queryString, page, ITEM_ROWS);

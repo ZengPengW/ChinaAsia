@@ -86,16 +86,19 @@ public class ImageApiController {
     public Map<String,Integer> updateImagesAndParamApi(ApiDo apiDo, ImageAndParamList imgs){
         Map<String,Integer> map=new HashMap<>();
         try {
-            Iterator<ImageAndParam> it =imgs.getImgs().iterator();
-            while(it.hasNext()){
-                ImageAndParam x = it.next();
-                if(StringUtils.isBlank(x.getAlt())
-                        &&StringUtils.isBlank(x.getHref())
-                        &&StringUtils.isBlank(x.getSrc())
-                        &&StringUtils.isBlank(x.getTitle())){
-                    it.remove();
+            if (imgs!=null&&imgs.getImgs()!=null){
+                Iterator<ImageAndParam> it =imgs.getImgs().iterator();
+                while(it.hasNext()){
+                    ImageAndParam x = it.next();
+                    if(StringUtils.isBlank(x.getAlt())
+                            &&StringUtils.isBlank(x.getHref())
+                            &&StringUtils.isBlank(x.getSrc())
+                            &&StringUtils.isBlank(x.getTitle())){
+                        it.remove();
+                    }
                 }
             }
+
             String json = JsonUtils.objectToJson(imgs);
             apiDo.setData(json);
             apiService.apiUpdate(apiDo);
@@ -174,54 +177,63 @@ public class ImageApiController {
     @PostMapping("/api/update/updateIndexImagesAndParamApi")
     @ResponseBody
     public Map<String,Integer> updateIndexImagesAndParamApi(ApiDo apiDo,ImageAndParamList imgs){
+       // System.out.println(apiDo.getCreated());
         Map<String,Integer> map=new HashMap<>();
         try {
-            Iterator<ImageAndParam> it =imgs.getImgs().iterator();
-            while(it.hasNext()){
-                ImageAndParam x = it.next();
-                if(StringUtils.isBlank(x.getAlt())
-                        &&StringUtils.isBlank(x.getHref())
-                        &&StringUtils.isBlank(x.getSrc())
-                        &&StringUtils.isBlank(x.getTitle())){
-                    it.remove();
-                }
-            }
             List<IndexImage> indexImages=new ArrayList<>();
-            List<ImageAndParam> params = imgs.getImgs();
-
-            IndexImage ims=null;
-            for (ImageAndParam imageAndParam:params) {
-                ims=new IndexImage();
-
-                String[] href = imageAndParam.getHref().trim().split(",");
-                String alt = imageAndParam.getAlt();
-                String src = imageAndParam.getSrc();
-                String[] bodys = imageAndParam.getTitle().split("\\|\\|\\|");
-
-                ims.setAlt(alt);
-                ims.setSrc(src);
-
-                List<String> hs=new ArrayList<>();
-                for (String h:href) {
-                    if (h!=null&&h.trim().length()>0){
-                        hs.add(h);
+            if (imgs!=null&&imgs.getImgs()!=null){
+                Iterator<ImageAndParam> it =imgs.getImgs().iterator();
+                while(it.hasNext()){
+                    ImageAndParam x = it.next();
+                    if(StringUtils.isBlank(x.getAlt())
+                            &&StringUtils.isBlank(x.getHref())
+                            &&StringUtils.isBlank(x.getSrc())
+                            &&StringUtils.isBlank(x.getTitle())){
+                        it.remove();
                     }
                 }
-                ims.setUrl(hs);
 
-                ims.setHead(bodys[0]);
-                List<String> bs = new ArrayList<>();
-                for (int i = 1; i < bodys.length; i++) {
-                    if (bodys[i]!=null&&bodys[i].trim().length()>0){
-                        bs.add(bodys[i]);
+                List<ImageAndParam> params = imgs.getImgs();
+
+                IndexImage ims=null;
+                for (ImageAndParam imageAndParam:params) {
+                    ims=new IndexImage();
+
+                    String[] href = imageAndParam.getHref().trim().split(",");
+                    String alt = imageAndParam.getAlt();
+                    String src = imageAndParam.getSrc();
+                    String[] bodys = imageAndParam.getTitle().split("\\|\\|\\|");
+
+                    ims.setAlt(alt);
+                    ims.setSrc(src);
+
+                    List<String> hs=new ArrayList<>();
+                    for (String h:href) {
+                        if (h!=null&&h.trim().length()>0){
+                            hs.add(h);
+                        }
                     }
+                    ims.setUrl(hs);
+
+                    ims.setHead(bodys[0]);
+                    List<String> bs = new ArrayList<>();
+                    for (int i = 1; i < bodys.length; i++) {
+                        if (bodys[i]!=null&&bodys[i].trim().length()>0){
+                            bs.add(bodys[i]);
+                        }
+                    }
+                    ims.setBody(bs);
+
+
+                    indexImages.add(ims);
+
                 }
-                ims.setBody(bs);
 
-
-                indexImages.add(ims);
 
             }
+
+
+
 
             String json = JsonUtils.objectToJson(indexImages);
             apiDo.setData(json);

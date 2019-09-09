@@ -82,10 +82,7 @@ public class ChinaAsiaApi {
                     result.setCode("0");
                     result.setData(apiDo.getData());
                 }else {
-                    List<String> list1=new ArrayList<>();
-                    for (ApiDo a:list) {
-                        list1.add(a.getData());
-                    }
+
                     result.setCode("0");
                     result.setData(list);
                 }

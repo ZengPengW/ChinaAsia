@@ -183,8 +183,9 @@ public class FileController extends BaseController {
 //        }
         String url="";
 		url+=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+		sysFile.setUrl(url+sysFile.getUrl());
         if (sysFileService.save(sysFile) > 0) {
-            return R.ok().put("fileName",url+sysFile.getUrl());
+            return R.ok().put("fileName",sysFile.getUrl());
         }
 		return R.error();
 	}

@@ -13,8 +13,8 @@
 
 
     <insert id="saveApi" parameterType="com.bootdo.api.domain.ApiDo" >
-        INSERT INTO api(`name`,`desc`,`data`,`status`,`pagename`,`created`,`updated`)
-        VALUES(#{name},#{desc},#{data},#{status},#{pagename},#{created},#{updated})
+        INSERT INTO api(`name`,`desc`,`data`,`status`,`pagename`,`created`,`updated`,`icon`)
+        VALUES(#{name},#{desc},#{data},#{status},#{pagename},#{created},#{updated},#{icon})
     </insert>
 
     <select id="selectById" resultType="com.bootdo.api.domain.ApiDo" parameterType="long" >
@@ -29,7 +29,8 @@
         `status`=#{status},
         `pagename`=#{pagename},
         `created`=#{created},
-        `updated`=#{updated}
+        `updated`=#{updated},
+        `icon`=#{icon}
         where id=#{id}
     </update>
 
